@@ -1,3 +1,5 @@
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 class Calculator {
 
@@ -39,7 +41,14 @@ class Calculator {
     etc
      */
     int fibonacciNumberFinder(int n){
-        return 0;
+        if (n <= 0) {
+            throw new IllegalArgumentException("Input must be a positive integer");
+        }
+        if (n == 1 || n == 2) {
+            return 1;
+        } else {
+            return fibonacciNumberFinder(n - 1) + fibonacciNumberFinder(n - 2);
+        }
     }
 
 
@@ -51,7 +60,7 @@ class Calculator {
     if int a = 16 then this method returns: 10000
      */
     String intToBinaryNumber(int number){
-        return null;
+        return Integer.toBinaryString(number);
     }
 
     /*
@@ -63,7 +72,25 @@ class Calculator {
     if you run this function twice with the same String input, it must return 2 unique String IDs
      */
     String createUniqueID(String n){
-        return null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(n.getBytes());
+
+            // Convert the byte array to a hexadecimal string
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
